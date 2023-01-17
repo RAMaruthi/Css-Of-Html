@@ -1,0 +1,53 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./minilib.js"></script>
+    <script>
+
+        function onLong() {
+            const a = document.getElementById("txt").value;
+            const b = document.getElementById("txtnum").value;
+            localStorage.setItem(a, b);
+            $("form").hide();
+            alert("Sing Up sucessfully");
+            // $("#t").show(1000);
+           
+        }
+        
+        function init() {
+            // $("#t").hide();
+            $("#log").click(onLong)
+        }
+
+        $().ready(init);
+
+    </script>
+</head>
+
+<body>
+    <h1>
+        ONLINE HOTEL
+    </h1>
+    <hr>
+    <form action="">
+        NAME :<input type="text" id="txt" placeholder="enter the name"><br>
+        NUMBER : <input type="number" id="txtnum" placeholder="enter the number"><br>
+    </form>
+    <button  onclick="onLong()" id="log">Sing Up</button>
+    <hr>
+    
+    <nav id="t">
+        <p id="p">palav <input type="number"></p> 
+        <span id="m"></span>
+        <p id="i">Idali<input type="number"></p>
+        <p id="d">Dosa<input type="number"></p>
+    </nav>
+
+
+</body>
+
+</html>

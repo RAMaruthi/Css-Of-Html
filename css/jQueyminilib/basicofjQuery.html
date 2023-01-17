@@ -1,0 +1,49 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./minilib.js"></script>
+    <style>
+        .div{
+            background-color: aquamarine;
+            border: 10px solid lightcoral;
+            display: inline-block;
+            height: 50px;
+            width: 50px;
+        }
+    </style>
+    <script>
+        $().ready(function(){
+            console.log("iam redy")
+        });
+        const func= function(){
+            $("div").click(function(){
+                $(this).css("background-color","red");    
+            })
+            $("div").hide(1000);
+
+            $("a").click(function(){
+                $("div").show(1500);
+            })
+            })
+        }
+        $().ready(func);
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="#">display</a>
+    </nav>
+    <div class="div">
+        <p id="">div 1</p>
+    </div>
+    <div class="div" >
+        <p id="">Div 2</p>
+    </div>
+    <div class="div">
+        <p id=""> Div 3</p>
+    </div>
+</body>
+</html>

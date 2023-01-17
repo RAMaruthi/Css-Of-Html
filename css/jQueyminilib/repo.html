@@ -1,0 +1,180 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./repo.css">
+    <script src="./minilib.js"></script>
+    <script src="./repocom.js"></script>
+    <script>
+        let foundExpense=null;
+        let finder;
+        const expRepo = new ExpenseManager();
+        function createData() {
+            expRepo.addNewExpense(new Expense("Food at cafe", 100, new Date(2022, 11, 13)))
+            expRepo.addNewExpense(new Expense("Brunch at cafe", 120, new Date(2022, 10, 23)))
+            expRepo.addNewExpense(new Expense("Coffee at cafe", 10, new Date(2022, 11, 11)))
+            expRepo.addNewExpense(new Expense("Tea at hotel", 10, new Date(2022, 11, 12)))
+        }
+        function dateString(date) {
+            return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+        }
+        function onDisplayRecord(id) {
+            $(".container").children("div").hide();
+            $(".container").children("div:eq(1)").show(0);
+            foundExpense=expRepo.getExpenseById(id);
+            $("#txtId").val(foundExpense.id);
+            $("#txtDetalis").val(foundExpense.detail);
+            $("#txtamout").val(foundExpense.amount);
+            $("#txtdate").val(foundExpense.date);
+        }
+        function populateData(data) {
+            $("table").find("tr:gt(0)").remove();
+            $.each(data, (index, item) => {
+
+                const row = `<tr>
+                    <td>${item.id}</td>
+                    <td>${item.detail}</td>
+                    <td>${item.amount}</td>
+                    <td>${dateString(item.date)}</td>
+                    <td><button class="edit" onclick="onDisplayRecord(${item.id})">Edit</button></td>
+                     `;
+                $("table").append(row);
+            })
+        }
+        function onDisplayTable() {
+            $(".container").children("div").hide();
+            $(".container").children("div:first").show(1000);
+            const data = expRepo.getAllExpenses();
+            populateData(data);
+        }
+        function onDisplayNewExpense() {
+            $(".container").children("div").hide();
+            $(".container > div:last").show(1000);
+        }
+        function onFindExpenseByDate() {
+            $(".container").children("div").hide();
+            $(".container > div:eq(2)").show(1000);
+        }
+
+        function onFindExpenseByDetail() {
+            alert("find by detail")
+        }
+        function clearText(div){
+            $(div).children("input").val("");
+        }
+        function onSave(){
+            foundExpense.detail=$("#txtDetalis").val();
+            foundExpense.amount=$("#txtamout").val();
+            foundExpense.date=new Date($("#txtdate").val());
+            const id = foundExpense.id;
+            const expense = new Expense(id,foundExpense.detail,foundExpense.amount,foundExpense.date)
+            expRepo.modifyExpense(id,foundExpense);
+            alert("expense modifide successfully");
+            clearText($(".container").children("div:eq(1)"));
+            $(".container").find("div:eq(1)").hide(2000);
+        }
+        function onNewExpense(){
+            const detail=$("#txtNewDetail").val();
+            const amount=$("#txtNewAmout").val();
+            const date=new Date($("#txtNewDate").val());
+            console.log(detail,amount,date);
+            const obj = new Expense(detail,amount,date);
+            expRepo.addNewExpense(obj);
+            alert("expens add success");
+            clearText();
+            $(".container > div:eq(2)").hide();
+
+        }
+        function onSearchByDate(){
+            const date=new Date($("#txtsearch").val());
+            const data=expRepo.findExpensesByDate(dateString(date));
+            
+            if(data.length == 0){
+                alert("No record found")
+            }else
+            {
+                $(".container").children("div").hide();
+            $(".container").children("div:first").show(1000);
+            populateData(data);
+        }
+        }
+        function init() {
+            createData();
+            $("div.container").children("div").hide();
+            $("a:first").click(onDisplayTable)
+            $("a:eq(1)").click(onDisplayNewExpense)
+            $("ul>li:eq(2)>a").click(onFindExpenseByDate);
+            $("ul>li:eq(3)>a").click(onFindExpenseByDetail);
+            $("#btnSave").click(onSave);
+            $("#addNew").click(onNewExpense);
+            $("#serch").click(onSearchByDate);
+
+        }
+        $().ready(init)
+    </script>
+</head>
+
+<body>
+    <h1>Expense Manager Software</h1>
+    <nav style="text-align: center">
+        <ul>
+            <li><a href="#">View All Expenses</a></li>
+            <li><a href="#">Add New Expense</a></li>
+            <li><a href="#">Find Expense By Date</a></li>
+            <li><a href="#">Find Expense By Detail</a></li>
+        </ul>
+    </nav>
+    <hr>
+    <div class="container">
+        
+        
+        <div>
+            <h2>Table of Records</h2>
+            <hr>
+            <table border="1">
+                <tr>
+                    <th>ExpenseID</th>
+                    <th>Expense Detail</th>
+                    <th>Expense Amount</th>
+                    <th>Date of Expense</th>
+                    <th>Option</th>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <h2>Details of the Expense</h2>
+            <hr>
+
+            <p>
+                <input type="text" id="txtId" placeholder="Expid">
+                <input type="text" id="txtDetalis" placeholder="Expdetalis">
+                <input type="number" id="txtamout" placeholder="ExAmout">
+                <input type="date" id="txtdate" placeholder="ExpDate">
+                
+            </p>
+            <button type="submit" id="btnSave">Save change</button>
+            <button >Clear</button>
+        </div>
+        <div >
+            <p>search Date <input type="date" id="txtsearch"></p>
+            <button type="submit" id="serch">submit</button>
+        </div>
+        <div>
+            <h2>Add New Expense</h2>
+            <hr>
+            <p>
+                    <input type="text" id="txtId" placeholder="Expid">
+                    <input type="text" id="txtNewDetail" placeholder="Expdetalis">
+                    <input type="number" id="txtNewAmout" placeholder="ExAmout">
+                    <input type="date" id="txtNewDate" placeholder="ExpDate">
+                </p>
+                <button type="submit" id="addNew">add</button>
+        </div>
+
+    </div>
+</body>
+
+</html>

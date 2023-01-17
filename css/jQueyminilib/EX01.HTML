@@ -1,0 +1,43 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./minilib.js"></script>
+    <script>
+        $().ready(function () {
+            $("div:first").slideUp(2000);
+            $("a").click(function(){
+                $("div:first").slideDown(2000);
+            })
+                $("#pdisplay").fadeToggle(1000);
+                $("button").click(function () {
+                    const obj = {};
+                    obj.name = $("#texname").val();
+                    obj.Email = $("#texmail").val();
+                    obj.salary = $("#texnumber").val();
+
+                    $("#pdisplay").text(JSON.stringify(obj));
+                    $("#pdisplay").fadeToggle(1000);
+                })
+            })
+        
+    </script>
+</head>
+<body>
+    <h1>USER REG FROM</h1>
+    <hr>
+    <a href="#">Display</a>
+<div>
+
+    <div> <p >Enter the name :<input type="text" id="texname"></p> </div>
+     <div><p>Enter the Email: <input type="email" id="texmail"></p></div>
+    <div> <p>Enter the salary :<input type="number" id="texnumber"></p></div>
+     <p>
+         <button type="submit">Display</button>
+     </p>
+     <p id="pdisplay"></p>
+</div>
+</body>
+</html>

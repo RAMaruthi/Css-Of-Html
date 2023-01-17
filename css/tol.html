@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toll Gate</title>
+     <link rel="stylesheet" href="./toll.css"> 
+    <script src="./toll.js"></script>
+    <script src="./minilib.js"></script>
+
+
+    <script>
+
+        function init() {
+            $("#vehicleType").change(onChange)
+            $("#sub").click(onClick)
+            $("#gen").click(onClickGenerate)
+        }
+
+        function onChange() {
+            const vehicleType = $("#vehicleType").val()
+            $("#Fee").val(obj.vehicleFee[vehicleType])
+        }
+
+        function onClick() {
+            obj.pushData(
+                new tollPlaza(
+                    $("#vehicleNumber").val(),
+                    $("#vehicleType").val(),
+                    Number($("#Fee").val()),
+                    $("#date").val(),
+                )
+                
+            )
+            $("#vehicleNumber").val("")
+                    $("#vehicleType").val("")
+                   $("#Fee").val("")
+                    $("#date").val("");
+                  
+
+            console.log(obj.getAllData())
+        }
+
+       
+
+        function onClickGenerate() {
+            const vType = $("#reportvehicleType").val()
+            // console.log(vType);
+            const report = generatingReport(vType)
+            let totalNum = 0
+            $.each(report, (index, item) => {
+                totalNum += item.fee
+            })
+            $("table").find("tr:gt(0)").remove();
+            const row = `<tr>
+            <td>${vType}</td>
+            <td>${report.length}</td>
+            <td>${totalNum}</td>
+            </tr>`
+            $("table").append(row)
+        }
+        function generatingReport(vType) {
+            const data = obj.getAllData();
+            return data.filter((e) => e.type === vType)
+        }
+        $().ready(init);
+    </script>
+
+
+</head>
+
+<body>
+    <div>
+        <h1>Enter the Toll Plaza Details</h1>
+    </div>
+    <div>
+        Vehicle Number : <input type="text" id="vehicleNumber"><br>
+
+        Vehicle Type : <select name="" id="vehicleType"><br>
+            <option value="Default">Select type</option>
+            <option value="Car">Car</option>
+            <option value="Bike">Bike</option>
+            <option value="Bus">Bus</option>
+            <option value="Truck">Truck</option>
+        </select><br>
+
+        Fee : <input type="number" id="Fee" disabled><br>
+
+        Date : <input type="date" id="date"> <br>
+
+        <button type="submit" id="sub"> Submit </button>
+       
+    </div>
+    <hr>
+    <div>
+        <h1>Toll Report</h1>
+    </div>
+    <div>
+        Select Vehicle Type : <select name="vehicleType" id="reportvehicleType"><br>
+            <option value="Default">Select type</option>
+            <option value="Car">Car</option>
+            <option value="Bike">Bike</option>
+            <option value="Bus">Bus</option>
+            <option value="Truck">Truck</option>
+        </select>
+    </div>
+    <div>
+        <button id="gen">Generate Report</button>
+        <table border="1">
+            <tr>
+                <th>Type</th>
+                <th>No of Vehicle</th>
+                <th>Total Amount</th>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

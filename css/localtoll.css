@@ -1,0 +1,11 @@
+*{
+    background-color: beige;
+    margin: 10px;
+}
+
+h1{
+    text-align: center;
+    color: burlywood; 
+    border: 1px solid rgb(161, 161, 14);
+    
+}
